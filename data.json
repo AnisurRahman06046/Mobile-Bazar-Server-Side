@@ -1,0 +1,14 @@
+[
+  {
+    "category_id": "01",
+    "name": "Samsung"
+  },
+  {
+    "category_id": "02",
+    "name": "Huawei"
+  },
+  {
+    "category_id": "03",
+    "name": "iPhone"
+  }
+]
