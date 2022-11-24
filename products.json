@@ -1,6 +1,6 @@
 [
   {
-    "category_id": "01",
+    "id": "637fbc1478026cb5d7fddfe8",
 
     "name": "Samsung S8",
     "location": "Mirpur,Dhaka",
@@ -12,7 +12,7 @@
     "img": "https://i.ibb.co/wrqBC0P/s8.jpg"
   },
   {
-    "category_id": "01",
+    "id": "637fbc1478026cb5d7fddfe8",
 
     "name": "Samsung S9",
     "location": "Adabor,Dhaka",
@@ -24,7 +24,7 @@
     "img": "https://i.ibb.co/Bs1JR2k/s9.jpg"
   },
   {
-    "category_id": "01",
+    "id": "637fbc1478026cb5d7fddfe8",
 
     "name": "Samsung S10",
     "location": "Mirpur 10,Dhaka",
@@ -36,7 +36,7 @@
     "img": "https://i.ibb.co/G2cpRN7/s10.jpg"
   },
   {
-    "category_id": "02",
+    "id": "637fbc1478026cb5d7fddfe9",
 
     "name": "Huawei P10",
     "location": "JatraBari,Dhaka",
@@ -47,20 +47,9 @@
 
     "img": "https://i.ibb.co/dLPWqYg/p10.jpg"
   },
-  {
-    "category_id": "02",
 
-    "name": "Huawei P10",
-    "location": "JatraBari,Dhaka",
-    "resalePrice": 50000,
-    "originalPrice": 80000,
-    "usedYear": 1,
-    "sellerName": "Abul",
-
-    "img": "https://i.ibb.co/dLPWqYg/p10.jpg"
-  },
   {
-    "category_id": "02",
+    "id": "637fbc1478026cb5d7fddfe9",
 
     "name": "Huawei P10 Lite",
     "location": "JatraBari,Dhaka",
@@ -72,7 +61,7 @@
     "img": "https://i.ibb.co/Tm8Z7VD/p10lite.jpg"
   },
   {
-    "category_id": "02",
+    "id": "637fbc1478026cb5d7fddfe9",
 
     "name": "Huawei P30",
     "location": "JatraBari,Dhaka",
@@ -82,5 +71,41 @@
     "sellerName": "Kashem",
 
     "img": "https://i.ibb.co/QPcR3vQ/p30.jpg"
+  },
+  {
+    "id": "637fbc1478026cb5d7fddfea",
+
+    "name": "iPhone 8",
+    "location": "JatraBari,Dhaka",
+    "resalePrice": 70000,
+    "originalPrice": 90000,
+    "usedYear": 1,
+    "sellerName": "Kashem",
+
+    "img": "https://i.ibb.co/BjtjBnp/i8.jpg"
+  },
+  {
+    "id": "637fbc1478026cb5d7fddfea",
+
+    "name": "iPhone 10",
+    "location": "JatraBari,Dhaka",
+    "resalePrice": 70000,
+    "originalPrice": 90000,
+    "usedYear": 1,
+    "sellerName": "Kashem",
+
+    "img": "https://i.ibb.co/x5Pv1d8/i10.jpg"
+  },
+  {
+    "id": "637fbc1478026cb5d7fddfea",
+
+    "name": "iPhone 12",
+    "location": "JatraBari,Dhaka",
+    "resalePrice": 70000,
+    "originalPrice": 90000,
+    "usedYear": 1,
+    "sellerName": "Kashem",
+
+    "img": "https://i.ibb.co/2tKyXzG/i12.jpg"
   }
 ]

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = process.env.PORT || 5000;
+const ObjectID = require("mongodb").ObjectId;
 require("dotenv").config();
 // middleware
 const cors = require("cors");
@@ -24,9 +25,19 @@ async function run() {
       .db("BuySell")
       .collection("productCategories");
 
+    const productsCollection = client.db("BuySell").collection("products");
+
     app.get("/categories", async (req, res) => {
       const query = {};
       const result = await categoriesCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { id: id };
+
+      const result = await productsCollection.find(query).toArray();
       res.send(result);
     });
   } finally {
