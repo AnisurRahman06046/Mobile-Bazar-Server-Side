@@ -2,12 +2,14 @@ const express = require("express");
 const app = express();
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = process.env.PORT || 5000;
-const ObjectID = require("mongodb").ObjectId;
+// const ObjectID = require("mongodb").ObjectId;
 require("dotenv").config();
 // middleware
 const cors = require("cors");
 
 app.use(cors());
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("api is running");
 });
@@ -26,18 +28,27 @@ async function run() {
       .collection("productCategories");
 
     const productsCollection = client.db("BuySell").collection("products");
+    const usersCollection = client.db("BuySell").collection("users");
 
+    // to show the category
     app.get("/categories", async (req, res) => {
       const query = {};
       const result = await categoriesCollection.find(query).toArray();
       res.send(result);
     });
-
+    // to show the data id based
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
       const query = { id: id };
 
       const result = await productsCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // api to create registered user data in db
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
       res.send(result);
     });
   } finally {
