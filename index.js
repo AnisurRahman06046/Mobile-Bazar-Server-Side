@@ -4,6 +4,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = process.env.PORT || 5000;
 // const ObjectID = require("mongodb").ObjectId;
 const JWT = require("jsonwebtoken");
+const { ObjectId } = require("mongodb");
 require("dotenv").config();
 // middleware
 const cors = require("cors");
@@ -23,6 +24,23 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
+// middleware to verify token
+function verifyToken(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(403).send({ message: "unauthorized access" });
+  }
+  const token = authHeader.split(" ")[1];
+  JWT.verify(token, process.env.SECRET_TOKEN, function (error, decoded) {
+    if (error) {
+      return res.status(403).send({ message: "unauthorized" });
+    }
+    req.decoded = decoded;
+    next();
+  });
+}
+
 async function run() {
   try {
     const categoriesCollection = client
@@ -70,8 +88,13 @@ async function run() {
     });
 
     // api to get the booked item on my orders route on client side
-    app.get("/bookeditems", async (req, res) => {
-      const query = {};
+    app.get("/bookeditems", verifyToken, async (req, res) => {
+      const email = req.query.email;
+      const decodedEmail = req.decoded.email;
+      if (email !== decodedEmail) {
+        return res.status(403).send({ message: "unauthorized access" });
+      }
+      const query = { email: email };
       const result = await bookingsCollection.find(query).toArray();
       res.send(result);
     });
@@ -100,6 +123,23 @@ async function run() {
       const query = {};
       const result = await usersCollection.findOne(query);
       res.send(result);
+    });
+
+    // app.get("/allsellers", async (req, res) => {
+    //   const query = {};
+    //   const users = await usersCollection.find(query).toArray();
+    //   const filtered = users.filter((user) => user.role === "Buyer");
+    //   console.log(filtered);
+    //   res.send(filtered);
+    // });
+
+    // admin to see all sellers and all nuyers route
+    app.get("/users/admin/:email", async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isAdmin: user?.role === "admin" });
     });
   } finally {
   }
