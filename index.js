@@ -173,6 +173,22 @@ async function run() {
       const allbuyers = users.filter((user) => user?.role === "Buyer");
       res.send(allbuyers);
     });
+
+    // api to delete a seller
+    app.delete("/seller/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await usersCollection.deleteOne(filter);
+      res.send(result);
+    });
+
+    // api to delete a buyer
+    app.delete("/buyer/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await usersCollection.deleteOne(filter);
+      res.send(result);
+    });
   } finally {
   }
 }
