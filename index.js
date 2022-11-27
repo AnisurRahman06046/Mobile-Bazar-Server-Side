@@ -157,6 +157,22 @@ async function run() {
       const user = await usersCollection.findOne(query);
       res.send({ isBuyer: user?.role === "Buyer" });
     });
+
+    // show all sellers users on all sellers route
+    app.get("/users/allsellers", async (req, res) => {
+      const query = {};
+      const users = await usersCollection.find(query).toArray();
+      const allsellers = users.filter((user) => user?.role === "Seller");
+      res.send(allsellers);
+    });
+
+    // api to show all buyers users on all buyers route
+    app.get("/users/allbuyers", async (req, res) => {
+      const query = {};
+      const users = await usersCollection.find(query).toArray();
+      const allbuyers = users.filter((user) => user?.role === "Buyer");
+      res.send(allbuyers);
+    });
   } finally {
   }
 }
