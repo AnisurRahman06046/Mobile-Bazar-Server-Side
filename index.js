@@ -189,6 +189,13 @@ async function run() {
       const result = await usersCollection.deleteOne(filter);
       res.send(result);
     });
+    // api to delete product by seller
+    app.delete("/postedproduct/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await postedProductsCollection.deleteOne(filter);
+      res.send(result);
+    });
   } finally {
   }
 }
