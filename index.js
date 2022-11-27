@@ -32,6 +32,9 @@ async function run() {
     const productsCollection = client.db("BuySell").collection("products");
     const usersCollection = client.db("BuySell").collection("users");
     const bookingsCollection = client.db("BuySell").collection("bookeditems");
+    const postedProductsCollection = client
+      .db("BuySell")
+      .collection("sellersproducts");
 
     // to show the category
     app.get("/categories", async (req, res) => {
@@ -53,6 +56,13 @@ async function run() {
       const result = await bookingsCollection.insertOne(bookingitems);
       res.send(result);
     });
+    // api for sellers posted product
+    app.post("/addedproducts", async (req, res) => {
+      const postedproduct = req.body;
+      const result = await postedProductsCollection.insertOne(postedproduct);
+      res.send(result);
+    });
+
     // api to get the booked item on my orders route on client side
     app.get("/bookeditems", async (req, res) => {
       const query = {};
