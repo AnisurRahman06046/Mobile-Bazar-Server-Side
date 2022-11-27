@@ -62,6 +62,12 @@ async function run() {
       const result = await postedProductsCollection.insertOne(postedproduct);
       res.send(result);
     });
+    // api to get the posted product by sellers
+    app.get("/addedproducts", async (req, res) => {
+      const query = {};
+      const result = await postedProductsCollection.find(query).toArray();
+      res.send(result);
+    });
 
     // api to get the booked item on my orders route on client side
     app.get("/bookeditems", async (req, res) => {
