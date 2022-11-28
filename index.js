@@ -6,6 +6,7 @@ const port = process.env.PORT || 5000;
 const JWT = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 // middleware
 const cors = require("cors");
 const { query } = require("express");
@@ -80,6 +81,16 @@ async function run() {
       const result = await postedProductsCollection.insertOne(postedproduct);
       res.send(result);
     });
+
+    app.get("/productbrandname", async (req, res) => {
+      const query = {};
+      const result = await categoriesCollection
+
+        .find(query)
+        .project({ name: 1 })
+        .toArray();
+      res.send(result);
+    });
     // api to get the posted product by sellers
     app.get("/addedproducts", async (req, res) => {
       const query = {};
@@ -124,14 +135,6 @@ async function run() {
       const result = await usersCollection.findOne(query);
       res.send(result);
     });
-
-    // app.get("/allsellers", async (req, res) => {
-    //   const query = {};
-    //   const users = await usersCollection.find(query).toArray();
-    //   const filtered = users.filter((user) => user.role === "Buyer");
-    //   console.log(filtered);
-    //   res.send(filtered);
-    // });
 
     // admin to see all sellers and all nuyers route
     app.get("/users/admin/:email", async (req, res) => {
@@ -214,6 +217,27 @@ async function run() {
       );
       res.send(result);
     });
+
+    app.get("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const booking = await bookingsCollection.findOne(query);
+      res.send(booking);
+    });
+
+    // app.post("/create-payment-intent", async (req, res) => {
+    //   const booking = req.body;
+    //   const price = booking.price;
+    //   const amount = price * 100;
+    //   const paymentIntent = await stripe.paymentIntents.create({
+    //     currency: "usd",
+    //     amount: amount,
+    //     payment_method_types: ["card"],
+    //   });
+    //   res.send({
+    //     clientSecret: paymentIntent.client_secret,
+    //   });
+    // });
   } finally {
   }
 }
