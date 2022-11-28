@@ -196,6 +196,24 @@ async function run() {
       const result = await postedProductsCollection.deleteOne(filter);
       res.send(result);
     });
+
+    // make  a seller verified
+    app.put("/seller/verify/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          type: "verified",
+        },
+      };
+      const result = await usersCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
+    });
   } finally {
   }
 }
