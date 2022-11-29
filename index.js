@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
 const { MongoClient, ServerApiVersion } = require("mongodb");
+require("dotenv").config();
 const port = process.env.PORT || 5000;
 // const ObjectID = require("mongodb").ObjectId;
 const JWT = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
-require("dotenv").config();
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 // middleware
 const cors = require("cors");
@@ -54,6 +55,8 @@ async function run() {
     const postedProductsCollection = client
       .db("BuySell")
       .collection("sellersproducts");
+
+    const paymentsCollection = client.db("BuySell").collection("payments");
 
     // to show the category
     app.get("/categories", async (req, res) => {
@@ -224,20 +227,38 @@ async function run() {
       const booking = await bookingsCollection.findOne(query);
       res.send(booking);
     });
+    // payment method implementaion
+    app.post("/create-payment-intent", async (req, res) => {
+      const booking = req.body;
+      console.log(booking);
+      const price = booking.resalePrice;
+      const amount = price * 100;
+      const paymentIntent = await stripe.paymentIntents.create({
+        currency: "usd",
+        amount: amount,
+        payment_method_types: ["card"],
+      });
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
 
-    // app.post("/create-payment-intent", async (req, res) => {
-    //   const booking = req.body;
-    //   const price = booking.price;
-    //   const amount = price * 100;
-    //   const paymentIntent = await stripe.paymentIntents.create({
-    //     currency: "usd",
-    //     amount: amount,
-    //     payment_method_types: ["card"],
-    //   });
-    //   res.send({
-    //     clientSecret: paymentIntent.client_secret,
-    //   });
-    // });
+      // api to store payment info on db
+      app.post("/payments", async (req, res) => {
+        const payment = req.body;
+        const result = await paymentsCollection.insertOne(payment);
+        const id = payment.bookingId;
+        const filter = { _id: ObjectId(id) };
+        const updatedDoc = {
+          $set: {
+            paid: true,
+            trandactionId: payment.transactionId,
+          },
+        };
+        const updated = await bookingsCollection.updateOne(filter, updatedDoc);
+
+        res.send(result);
+      });
+    });
   } finally {
   }
 }
