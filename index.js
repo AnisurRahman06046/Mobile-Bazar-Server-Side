@@ -81,7 +81,7 @@ async function run() {
     // api for sellers posted product
     app.post("/addedproducts", async (req, res) => {
       const postedproduct = req.body;
-      const result = await postedProductsCollection.insertOne(postedproduct);
+      const result = await productsCollection.insertOne(postedproduct);
       res.send(result);
     });
 
@@ -96,8 +96,9 @@ async function run() {
     });
     // api to get the posted product by sellers
     app.get("/addedproducts", async (req, res) => {
-      const query = {};
-      const result = await postedProductsCollection.find(query).toArray();
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await productsCollection.find(query).toArray();
       res.send(result);
     });
 
@@ -199,7 +200,7 @@ async function run() {
     app.delete("/postedproduct/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
-      const result = await postedProductsCollection.deleteOne(filter);
+      const result = await productsCollection.deleteOne(filter);
       res.send(result);
     });
 
@@ -258,6 +259,22 @@ async function run() {
 
         res.send(result);
       });
+    });
+
+    // api to post advertised items
+    app.post("/advertisedproducts", async (req, res) => {
+      const advertisedProducts = req.body;
+      const advertised = await postedProductsCollection.insertOne(
+        advertisedProducts
+      );
+      res.send(advertised);
+    });
+
+    // api to show advertised items
+    app.get("/advertised", async (req, res) => {
+      const query = {};
+      const result = await postedProductsCollection.find(query).toArray();
+      res.send(result);
     });
   } finally {
   }
